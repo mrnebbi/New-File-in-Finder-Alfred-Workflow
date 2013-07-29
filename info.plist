@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>ianisted.newfile</string>
+	<key>connections</key>
+	<dict>
+		<key>71877AC7-C39E-455F-8D7D-721D2E1174B1</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>FC9F751E-52A1-4409-BF5C-34E35A306656</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>9FFECD41-C050-4653-8470-CE41933FD977</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>71877AC7-C39E-455F-8D7D-721D2E1174B1</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>FC9F751E-52A1-4409-BF5C-34E35A306656</key>
+		<array/>
+	</dict>
+	<key>createdby</key>
+	<string>Ian Isted &amp; Chris Kalafarski</string>
+	<key>description</key>
+	<string>Creates a new file in the active finder window. ? for help</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>Create New File in Finder</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>1</integer>
+				<key>keyword</key>
+				<string>new</string>
+				<key>subtext</key>
+				<string>Enter a filename and extension for your new file. Type ? for help.</string>
+				<key>text</key>
+				<string>Create New File</string>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>71877AC7-C39E-455F-8D7D-721D2E1174B1</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>54</integer>
+				<key>script</key>
+				<string>_osa1 = 'tell application \"Finder\" to set insertionLocation to insertion location as alias'
+_osa2 = 'return POSIX path of insertionLocation'
+activeFinderPath = (`osascript -e "#{_osa1}" -e "#{_osa2}"`).strip
+
+filename = 'untitled'
+extension = 'txt'
+
+if '{query}' == 'help' || '{query}' == '?'
+	system("open", "http://ianisted.co.uk/new-finder-file-alfred-2")
+	exit
+else
+	if '{query}' &amp;&amp; '{query}'.include?(?.)
+	  filename = '{query}'.split('.')[0]
+	  extension = '{query}'.split('.')[1]
+	end
+	
+	file = [filename, extension].join('.')
+	path = [activeFinderPath, file].join
+	
+	template = [extension, extension].join('.')
+	if (File.exists?("templates/#{template}"))
+	  system(%[cp "templates/#{template}" "#{path}"])
+	else
+	  system(%[touch "#{path}"])
+	end
+end</string>
+				<key>type</key>
+				<integer>2</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>FC9F751E-52A1-4409-BF5C-34E35A306656</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>action</key>
+				<integer>0</integer>
+				<key>argument</key>
+				<integer>0</integer>
+				<key>hotkey</key>
+				<integer>45</integer>
+				<key>hotmod</key>
+				<integer>786432</integer>
+				<key>hotstring</key>
+				<string>N</string>
+				<key>leftcursor</key>
+				<false/>
+				<key>modsmode</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.trigger.hotkey</string>
+			<key>uid</key>
+			<string>9FFECD41-C050-4653-8470-CE41933FD977</string>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string>Create new file, v3.0:
+http://ianisted.co.uk/new-finder-file-alfred-2
+
+---
+
+To create new a new file, open a finder window. Call up Alfred and type the filename and extension you want to use.
+
+If you want to use templates for new files, create a file with the format "extension.extension", e.g. "html.html" in the extensions Templates folder.
+
+---
+
+Created by Ian Isted (http://ianisted.co.uk)
+Thanks to Chris Kalafarski (http://awholenother.com)</string>
+	<key>uidata</key>
+	<dict>
+		<key>71877AC7-C39E-455F-8D7D-721D2E1174B1</key>
+		<dict>
+			<key>ypos</key>
+			<real>10</real>
+		</dict>
+		<key>9FFECD41-C050-4653-8470-CE41933FD977</key>
+		<dict>
+			<key>ypos</key>
+			<real>10</real>
+		</dict>
+		<key>FC9F751E-52A1-4409-BF5C-34E35A306656</key>
+		<dict>
+			<key>ypos</key>
+			<real>10</real>
+		</dict>
+	</dict>
+	<key>webaddress</key>
+	<string>http://ianisted.co.uk/new-finder-file-alfred-2</string>
+</dict>
+</plist>
